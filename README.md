@@ -1,4 +1,4 @@
-# Re-Rx
+# Recursive-Rule eXtraction (Re-Rx) algorithm
 
 ## Environment
 - python>=3.7.11
