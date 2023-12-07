@@ -53,7 +53,7 @@ The arguments of `ReRx` are as follows:
 - log_func [default `print`]
 
 #### Setting for using J48graft
-J48graftはwekaで動作するためjavaのインストールが必要です．以下をコピペすればok．
+J48graft operates based on weka and requires Java to be installed.
 
 ```bash
 sudo apt update
