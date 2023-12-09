@@ -4,10 +4,10 @@ from typing import Dict, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from keras.layers import Input
-from keras.layers.core import Dense
+from keras.initializers import Constant
+from keras.layers import Dense, Input
 from keras.models import Model
-from keras.optimizers import SGD, Adam
+from keras.optimizers import SGD, Adam, AdamW
 from sklearn.metrics import (
     accuracy_score,
     f1_score,
@@ -85,7 +85,7 @@ class MLP(BaseModel):
         act="relu",
         lr=0.01,
         momentum=0.99,
-        decay=5e-4,
+        weight_decay=5e-4,
         epochs=50,
         batch_size="auto",
         eval_batch_size=4096,
@@ -109,7 +109,7 @@ class MLP(BaseModel):
         self.optimizer = optimizer
         self.lr = lr
         self.momentum = momentum
-        self.decay = decay
+        self.weight_decay = weight_decay
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -142,7 +142,7 @@ class MLP(BaseModel):
 
     def make_model(self, input_dim, output_bias=None) -> Model:
         if output_bias is not None:
-            output_bias = tf.keras.initializers.Constant(output_bias)
+            output_bias = Constant(output_bias)
         inputs = Input(shape=(input_dim,))
 
         x = Dense(units=self.h_dim, kernel_initializer="uniform", activation=self.act, name="hidden_layer")(inputs)
@@ -165,8 +165,10 @@ class MLP(BaseModel):
         self.model = self.make_model(input_dim, output_bias if self.use_output_bias else None)
         if self.optimizer == "adam":
             optimizer = Adam(learning_rate=self.lr)
+        elif self.optimizer == "adamw":
+            optimizer = AdamW(learning_rate=self.lr, weight_decay=self.weight_decay)
         elif self.optimizer == "sgd":
-            optimizer = SGD(learning_rate=self.lr, momentum=self.momentum, decay=self.decay)
+            optimizer = SGD(learning_rate=self.lr, momentum=self.momentum, weight_decay=self.weight_decay)
         self.model.compile(
             # optimizer = 'rmsprop',
             optimizer=optimizer,
