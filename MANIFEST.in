@@ -1,1 +1,2 @@
 recursive-include rerx/weka *
+include requirements.txt
