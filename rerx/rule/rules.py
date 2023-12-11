@@ -13,7 +13,7 @@ from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from sklearn.utils import check_array
 
 op_dict = {"eq": "=", "gt": ">", "lt": "<", "ge": "≥", "le": "≤", "ne": "!="}
-op_tex_dict = {"eq": "=", "gt": ">", "lt": "<", "ge": "\ge", "le": "\le", "ne": "\neq"}
+op_tex_dict = {"eq": "=", "gt": ">", "lt": "<", "ge": "\\ge", "le": "\\le", "ne": "\\neq"}
 
 
 class RuleSet:
@@ -553,7 +553,7 @@ class Condition:
         else:
             value_str = f"{self.value}"
         if hasattr(self, "_category"):
-            value_str = self._category
+            value_str = "\\textit{" + self._category + "}"
         att_name = self.att_name.replace("_", "\\_")
         return "(\\textit{" + f"{att_name}" + "} " + f"{op_tex_dict[self.op.__name__]} {value_str})"
 
