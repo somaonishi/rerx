@@ -60,11 +60,11 @@ class J48graft(BaseTree):
             min_instance = int(min_instance * len(y))
             self.logger(f"min_instance is changed to {min_instance}.")
 
-        # size_minor_class = np.unique(y, return_counts=True)[1].min()
-        # if size_minor_class < min_instance:
-        #     self.logger(f"Warning : The number of minor class is less than {min_instance}.")
-        #     min_instance = size_minor_class
-        #     self.logger(f"min_instance is changed to {min_instance}.")
+        size_minor_class = np.unique(y, return_counts=True)[1].min()
+        if size_minor_class < min_instance:
+            self.logger(f"Warning : The number of minor class is less than {min_instance}.")
+            min_instance = size_minor_class
+            self.logger(f"min_instance is changed to {min_instance}.")
 
         self.data2csv(X, y)
 
