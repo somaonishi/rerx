@@ -13,6 +13,7 @@ from sklearn.metrics import accuracy_score, f1_score, roc_auc_score
 from sklearn.utils import check_array
 
 op_dict = {"eq": "=", "gt": ">", "lt": "<", "ge": "≥", "le": "≤", "ne": "!="}
+op_tex_dict = {"eq": "=", "gt": ">", "lt": "<", "ge": "\ge", "le": "\le", "ne": "\neq"}
 
 
 class RuleSet:
@@ -96,6 +97,18 @@ class RuleSet:
 
     def unique_label(self):
         return np.unique([rule.y for rule in self.rules])
+
+    def to_latex(self):
+        return_str = ""
+        i = 1
+        for rule in self.rules:
+            rule_string = "$r_{" + str(i) + "}$ & $"
+            rule_string = rule_string + " \land ".join(map(lambda cond: cond[1].to_latex(), rule.A))
+            rule_string += " \\rightarrow " + str(rule.y)
+            rule_string += "$ \\\\\n"
+            return_str += rule_string
+            i += 1
+        return return_str
 
     def __str__(self):
         return_str = ""
@@ -533,6 +546,16 @@ class Condition:
 
     def set_category(self, category: str):
         self._category = category
+
+    def to_latex(self, digits=3):
+        if isinstance(self.value, float):
+            value_str = f"{self.value:.{digits}f}"
+        else:
+            value_str = f"{self.value}"
+        if hasattr(self, "_category"):
+            value_str = self._category
+        att_name = self.att_name.replace("_", "\\_")
+        return "(\\textit{" + f"{att_name}" + "} " + f"{op_tex_dict[self.op.__name__]} {value_str})"
 
     def __str__(self, digits=3):
         value_str = f"{self.value:.{digits}f}"
