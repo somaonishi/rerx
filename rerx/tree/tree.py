@@ -23,7 +23,7 @@ class J48graft(BaseTree):
         *,
         tree="j48graft",
         mode="ori",
-        min_instance_rate=0.1,
+        min_instance: Union[int, float] = 2,
         pruning_conf=0.25,
         out_dir: Union[Path, str] = Path("./j48graft/"),
         verbose=1,
@@ -34,7 +34,7 @@ class J48graft(BaseTree):
 
         self.tree = tree
         self.mode = mode
-        self.min_instance_rate = min_instance_rate
+        self.min_instance = min_instance
         self.pruning_conf = pruning_conf
 
         if isinstance(out_dir, str):
@@ -55,7 +55,16 @@ class J48graft(BaseTree):
         # assert len(data["class"].unique()) >= 2, "The training data for weka J48graft consists of only a single class."
 
     def fit(self, X: pd.DataFrame, y: np.ndarray, eval_set: Optional[Tuple[pd.DataFrame, np.ndarray]] = None) -> None:
-        min_instance = int(self.min_instance_rate * len(y))
+        min_instance = self.min_instance
+        if isinstance(min_instance, float):
+            min_instance = int(min_instance * len(y))
+            self.logger(f"min_instance is changed to {min_instance}.")
+
+        # size_minor_class = np.unique(y, return_counts=True)[1].min()
+        # if size_minor_class < min_instance:
+        #     self.logger(f"Warning : The number of minor class is less than {min_instance}.")
+        #     min_instance = size_minor_class
+        #     self.logger(f"min_instance is changed to {min_instance}.")
 
         self.data2csv(X, y)
 
