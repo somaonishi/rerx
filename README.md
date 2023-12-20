@@ -1,4 +1,4 @@
-# Recursive-Rule eXtraction (Re-Rx) algorithm
+# Recursive-Rule eXtraction (Re-RX) algorithm
 
 ## Environment
 - python>=3.7.11
@@ -6,7 +6,7 @@
   - See `Custom Run -> BaseTree -> Setting for using J48graft`
 
 ## How to run
-### 1. Install Re-Rx
+### 1. Install Re-RX
 Run the following command in the directory where `setup.py` is located
 
 ```bash
@@ -19,9 +19,9 @@ python example.py
 ```
 
 ## Custom run
-### ReRx
-You can use `ReRx` by `from rerx import ReRx`.
-The arguments of `ReRx` are as follows:
+### ReRX
+You can use `ReRX` by `from rerx import ReRX`.
+The arguments of `ReRX` are as follows:
 
 - base_model
   - A model that satisfies the requirements of `BaseModel`.
@@ -87,24 +87,24 @@ java -version
 ### Examples
 #### Use J48graft
 ```python
-from rerx import MLP, J48graft, ReRx
+from rerx import MLP, J48graft, ReRX
 
 mlp = MLP()
 j48graft = J48graft()
-rerx = ReRx(base_model=mlp, tree=j48graft)
+rerx = ReRX(base_model=mlp, tree=j48graft)
 rerx.fit(X, y)
 score = rerx.evaluate(X_test, y_test)
 ```
 
 #### Use CART (DecisionTreeClassifier)
 ```python
-from rerx import MLP, ReRx
+from rerx import MLP, ReRX
 from sklearn.tree import DecisionTreeClassifier
 
 
 mlp = MLP()
 cart = DecisionTreeClassifier()
-rerx = ReRx(base_model=mlp, tree=cart)
+rerx = ReRX(base_model=mlp, tree=cart)
 rerx.fit(X, y)
 score = rerx.evaluate(X_test, y_test)
 ```
