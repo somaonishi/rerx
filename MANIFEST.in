@@ -1,2 +1,2 @@
-recursive-include rerx/weka *
+recursive-include rerx/tree/weka *
 include requirements.txt
