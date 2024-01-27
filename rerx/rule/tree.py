@@ -83,12 +83,12 @@ class J48graftTree(Tree):
             self.append(Leaf(value, class_distribution))
             return
 
-        # 行ごとに決定木のテキストを処理
+        # Process decision tree text line by line
         for line in self.tree_text:
-            # 分割
+            # division
             parts = re.split(r" (=|!=|<=|>=|<|>) ", line)
 
-            # 葉ノードを判定する正規表現パターン
+            # Regular expression pattern to determine leaf nodes
             leaf_pattern = r"(\d+) \("
             leaf_match = re.search(leaf_pattern, parts[-1])
 
