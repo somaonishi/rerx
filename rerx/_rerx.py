@@ -95,11 +95,9 @@ class ReRx(BaseEstimator, ClassifierMixin):
         subdivision_mask: np.ndarray,
         rule: Rule,
     ):
-        # node i に分類したデータのみを抽出
         X_next = self.X[subdivision_mask].reset_index(drop=True)
         y_next = self.y[subdivision_mask]
 
-        # node i に達する際に使用しなかった属性情報のみを選択
         X_next = X_next[subdivision_columns].drop(rule.get_attrs_in_rule(), axis=1)
         self.logger(f"X_train_next : {X_next.shape}")
         self.logger(f"y_train_next : {y_next.shape}")
@@ -108,7 +106,6 @@ class ReRx(BaseEstimator, ClassifierMixin):
             eval_set = (X_val, self.eval_set[1])
             self.logger(f"X_val_next : {X_val.shape}")
 
-        # 再帰呼び出し
         self.logger("Rules extraction is called in subdivisions.")
         sub_ruleset = self.get_ruleset_recursive(X_next, y_next, subdivision_mask, eval_set)
         return sub_ruleset
